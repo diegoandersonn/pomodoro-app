@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { useInterval } from '../hooks/use-interval'
 import { Button } from './button'
 import { Timer } from './timer'
@@ -31,25 +31,41 @@ export function PomodoroTimer(props: Props): JSX.Element {
    useInterval(
       () => {
          setMainTime(mainTime - 1)
+         if(working) setFullWorkingTime(fullWorkingTime + 1)
       },
       timeCounting ? 1000 : null
    )
 
-   const configureWork = (): void => {
+   const configureWork = useCallback((): void => {
       setTimeCounting(true)
       setWorking(true)
       setResting(false)
       setMainTime(props.pomodoroTime)
       audioStartWorking.play()
-   }
-   const configureRest = (isLong: boolean): void => {
-      setTimeCounting(true)
-      setWorking(false)
-      setResting(true)
-      if (isLong) setMainTime(props.longRestTime)
-      if (!isLong) setMainTime(props.shortRestTime)
-      audioStopWorking.play()
-   }
+   }, [
+      setTimeCounting,
+      setWorking,
+      setResting,
+      setMainTime,
+      props.pomodoroTime,
+   ])
+   const configureRest = useCallback(
+      (isLong: boolean): void => {
+         setTimeCounting(true)
+         setWorking(false)
+         setResting(true)
+         if (isLong) setMainTime(props.longRestTime)
+         if (!isLong) setMainTime(props.shortRestTime)
+         audioStopWorking.play()
+      }, [
+         setTimeCounting,
+         setWorking,
+         setResting,
+         setMainTime,
+         props.longRestTime,
+         props.shortRestTime,
+      ]
+   )
 
    useEffect(() => {
       if (working) document.body.classList.add('working')
@@ -75,12 +91,13 @@ export function PomodoroTimer(props: Props): JSX.Element {
       cyclesQtdManager,
       completedCycles,
       numberOfPomodoros,
+      fullWorkingTime,
       props.cycles,
    ])
 
    return (
       <div className="pomodoro">
-         <h2>You are: working</h2>
+         <h2>You are: {working ? 'Working' : 'Resting'} !</h2>
          <Timer mainTime={mainTime} />
          <div className="controls">
             <Button text="Work" onClick={() => configureWork()}></Button>
