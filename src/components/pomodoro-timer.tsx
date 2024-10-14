@@ -17,7 +17,9 @@ interface Props {
 }
 
 export function PomodoroTimer(props: Props): JSX.Element {
-   const [mainTime, setMainTime] = useState(props.pomodoroTime)
+   const [mainTime, setMainTime] = useState(
+    Number(localStorage.getItem('mainTime')) || props.pomodoroTime
+    )
    const [timeCounting, setTimeCounting] = useState(false)
    const [working, setWorking] = useState(false)
    const [resting, setResting] = useState(false)
@@ -35,13 +37,14 @@ export function PomodoroTimer(props: Props): JSX.Element {
    )
 
    useEffect(() => {
-      localStorage.setItem('completedCycles', JSON.stringify(completedCycles))
+      localStorage.setItem('mainTime', JSON.stringify(mainTime))
+      localStorage.setItem('fullWorkingTime', JSON.stringify(fullWorkingTime))
       localStorage.setItem('fullWorkingTime', JSON.stringify(fullWorkingTime))
       localStorage.setItem(
          'numberOfPomodoros',
          JSON.stringify(numberOfPomodoros)
       )
-   }, [cyclesQtdManager, completedCycles, fullWorkingTime, numberOfPomodoros])
+   }, [cyclesQtdManager, mainTime, completedCycles, fullWorkingTime, numberOfPomodoros])
 
    useInterval(
       () => {
@@ -55,14 +58,11 @@ export function PomodoroTimer(props: Props): JSX.Element {
       setTimeCounting(true)
       setWorking(true)
       setResting(false)
-      setMainTime(props.pomodoroTime)
       audioStartWorking.play()
    }, [
       setTimeCounting,
       setWorking,
       setResting,
-      setMainTime,
-      props.pomodoroTime,
    ])
    const configureRest = useCallback(
       (isLong: boolean): void => {
