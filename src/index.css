@@ -11,7 +11,18 @@ body {
   transition: backgroud-color 300ms ease-in-out;
   line-height: 1.5;
 }
-
+.header {
+  background-color: rgb(7, 141, 150);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header-link {
+  color: rgb(12, 82, 87);
+  margin: 0 25px 0 0;
+  font-weight: bold;
+}
 .container {
   max-width: 640px;
   margin: 0 auto;
