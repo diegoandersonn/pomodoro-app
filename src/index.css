@@ -75,3 +75,40 @@ body {
 .pomodoro .details {
   margin: 20px 0;
 }
+
+.config-form {
+  color: black;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 80rem;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 0.4rem;
+  box-shadow: 0 0 1rem rgba(0,0,0,0.5);
+}
+.config-form .form-tittle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.config-form .row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.config-form .form-inputs {
+  display: flex;
+  flex-direction: column;
+}
+
+.config-form input {
+  background-color: rgb(7, 141, 150);
+  color: black;
+  border: 0.2rem solid rgb(44, 120, 125);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
